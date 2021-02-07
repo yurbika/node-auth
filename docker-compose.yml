@@ -1,0 +1,25 @@
+version: "3.1"
+services:
+  db:
+    image: postgres
+    ports:
+      - ${PG_PORT}:5432
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - node_auth:/var/lib/postgresql/data/
+
+  cache:
+    image: redis
+    ports:
+      - "${REDIS_PORT}:6379"
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - cachedata:/data
+
+volumes:
+  node_auth:
+  cachedata:
